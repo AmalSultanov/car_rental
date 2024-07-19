@@ -5,7 +5,7 @@ from handlers import (start, get_cars_list, category_detail, back,
 
 
 def main():
-    updater = Updater('1942058731:AAEidJ48WKA2avwyT8iqh0Q7dgQhb4qRooA')
+    updater = Updater(config('BOT_TOKEN'))
 
     dispatcher = updater.dispatcher
 
