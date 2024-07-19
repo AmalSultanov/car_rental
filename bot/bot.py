@@ -2,8 +2,8 @@
 # import telebot
 # from telebot import types
 # from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
-#
-# bot = telebot.TeleBot('1942058731:AAEidJ48WKA2avwyT8iqh0Q7dgQhb4qRooA')
+# from decouple import config
+# bot = telebot.TeleBot(config('BOT_TOKEN'))
 #
 #
 # def category_detail(update, context):
