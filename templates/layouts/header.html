@@ -1,0 +1,110 @@
+{% load i18n %}
+{% load mytags %}
+{% block extra_css %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap" rel="stylesheet">
+    <style>
+        .lang_dropdown {
+            display: inline-block;
+        }
+        /* Dropdown Content (Hidden by Default) */
+        .lang_dropdown-content {
+            display: none;
+            position: absolute;
+            width: 40px;
+        }
+
+        /* Links inside the dropdown */
+        .lang_dropdown-content a {
+            color: white;
+            padding: 10px 15px 10px 7px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* Show the dropdown menu on hover */
+        .lang_dropdown:hover .lang_dropdown-content {
+            display: block;
+        }
+    </style>
+{% endblock %}
+
+<div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+            <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+</div>
+
+<header class="site-navbar site-navbar-target" id="top" role="banner">
+    <div class="container">
+        <div class="row align-items-center position-relative">
+            <div class="col-3">
+                <div class="site-logo" style="margin-top: -11px;">
+                    <a href="{% url 'pages:home' %}">CarRent</a>
+                </div>
+            </div>
+
+            <div class="col-9 text-right">
+                <span class="d-inline-block d-lg-none">
+                    <a href="#" class="text-white site-menu-toggle js-menu-toggle py-5 text-white">
+                        <span class="icon-menu h3 text-white"></span>
+                    </a>
+                </span>
+
+                <nav class="site-navigation text-right ml-auto d-none d-lg-block" role="navigation">
+                    <ul class="site-menu main-menu js-clone-nav" style="font-family: 'Nunito', sans-serif;">
+                        <li {% if request.path == '/ru/' or request.path == '/en/' %}class="active"{% endif %}>
+                            <a href="{% url 'pages:home' %}" class="nav-link">{% trans 'Home' %}</a>
+                        </li>
+                        <li {% if request.path == '/ru/services/' or request.path == '/en/services/' %}class="active"{% endif %}>
+                            <a href="{% url 'pages:services' %}" class="nav-link">{% trans 'Services' %}</a>
+                        </li>
+                        <li {% if request.path == '/ru/cars/' or request.path == '/en/cars/' %}class="active"{% endif %}>
+                            <a href="{% url 'offers:cars' %}" class="nav-link">{% trans 'Cars' %}</a>
+                        </li>
+                        <li {% if request.path == '/ru/about/' or request.path == '/en/about/' %}class="active"{% endif %}>
+                            <a href="{% url 'pages:about' %}" class="nav-link">{% trans 'About' %}</a>
+                        </li>
+                        <li {% if request.path == '/ru/blog/' or request.path == '/en/blog/' %}class="active"{% endif %}>
+                            <a href="{% url 'info:blog' %}" class="nav-link">{% trans 'Blog' %}</a>
+                        </li>
+                        <li {% if request.path == '/ru/contact/' or request.path == '/en/contact/' %}class="active"{% endif %}>
+                            <a href="{% url 'pages:contact' %}" class="nav-link">{% trans 'Contacts' %}</a>
+                        </li>
+                        {% if request.user.is_authenticated %}
+                            <li>
+                                <a href="{% url 'auth_logout' %}">
+                                    <p class="text-warning font-size-17">{% trans 'Log out' %}</p>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{% url 'auth_login' %}">
+                                    <p class="text-warning font-size-17">{% trans 'Sign in' %}</p>
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <div class="lang_dropdown">
+                                {% get_current_language as lang %}
+                                {% get_available_languages as langs %}
+                                <button class="text-white" style="background: transparent; border: 0;">{{ lang|upper }}</button>
+                                <div class="lang_dropdown-content">
+                                    {% for l in langs %}
+                                        {% if l.0 != lang %}
+                                            <a href="{% get_lang_url request l.0 %}">{{ l.0|upper }}</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>

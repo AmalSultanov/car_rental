@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    Car Rent &mdash; Cars
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+    <style>
+        #filters:hover {
+            color: black;
+        }
+
+        #cls:active, #cls:focus {
+            box-shadow: none;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="ftco-blocks-cover-1">
+        {% for image in bg_image %}
+            <div class="ftco-cover-1 overlay innerpage"
+                 style="background-image: url('{{ image.image.url }}'); max-width: 100%; height: auto;">
+                <div class="container">
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-lg-6 text-center">
+                            <h1 data-aos="fade-up" style="font-family: 'Montserrat', sans-serif;">{{ image.title }}</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="site-section">
+        <div class="container">
+            <div class="accordion mb-4" id="accordionExample" style="margin-top: -20px;">
+                <div class="card border shadow-sm rounded" id="cars">
+                    <div class="card-header" id="headingTwo" style="background: #007bff;">
+                        <h2 class="mb-0">
+                            <button class="btn btn-block text-black collapsed text-center" id="cls" type="button"
+                                    data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+                                    aria-controls="collapseTwo" style="font-family: 'Rubik', serif;">
+                                {% trans 'Tap to close filters' %}
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse show bg-light" aria-labelledby="headingTwo"
+                         data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="row mt-2">
+                                <div class="col-6 col-md-6 col-lg-3 col-xl-3 mb-3">
+                                    <div class="form-group">
+                                        <h6 style="font-family: 'Noto Sans', sans-serif;"><label for="exampleFormControlSelect2">{% trans 'Type' %}</label></h6>
+                                        <select multiple onchange="window.location.href=this.options[this.selectedIndex].value" multiple class="form-control" id="exampleFormControlSelect2">
+                                            {% for type in types %}
+                                                <option {% if request.GET.type == type.pk|stringformat:"i" %}selected{% endif %}
+                                                        class="text-center"
+                                                        onclick="addUrlParameter('type', '{{ type.pk }}')" style="font-family: 'Rubik', serif;">{{ type.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-6 col-lg-3 col-xl-3">
+                                    <div class="form-group">
+                                        <h6 style="font-family: 'Noto Sans', sans-serif;"><label for="exampleFormControlSelect2">{% trans 'Brand' %}</label></h6>
+                                        <select multiple onchange="window.location.href=this.options[this.selectedIndex].value" multiple class="form-control" id="exampleFormControlSelect2">
+                                            {% for brand in brands %}
+                                                <option {% if request.GET.brand == brand.pk|stringformat:"i" %}selected{% endif %}
+                                                        class="text-center"
+                                                        onclick="addUrlParameter('brand', '{{ brand.pk }}')" style="font-family: 'Rubik', serif;">{{ brand.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-6 col-lg-3 col-xl-3">
+                                    <h6 style="font-family: 'Noto Sans', sans-serif;"><label for="exampleFormControlSelect2">{% trans 'Drive' %}</label></h6>
+                                    <select multiple onchange="window.location.href=this.options[this.selectedIndex].value" multiple class="form-control" id="exampleFormControlSelect2">
+                                        {% for drive in drive %}
+                                            <option {% if request.GET.drive == drive.pk|stringformat:"i" %}selected{% endif %}
+                                                    class="text-center"
+                                                    onclick="addUrlParameter('drive', '{{ drive.pk }}')" style="font-family: 'Rubik', serif;">{{ drive.title }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-6 col-md-6 col-lg-3 col-xl-3">
+                                    <div class="form-group">
+                                        <h6 style="font-family: 'Noto Sans', sans-serif;"><label for="exampleFormControlSelect2">{% trans 'Fuel' %}</label></h6>
+                                        <select multiple onchange="window.location.href=this.options[this.selectedIndex].value" multiple class="form-control" id="exampleFormControlSelect2">
+                                            {% for fuel in fuel %}
+                                                <option {% if request.GET.fuel == fuel.pk|stringformat:"i" %}selected{% endif %}
+                                                        class="text-center"
+                                                        onclick="addUrlParameter('fuel', '{{ fuel.pk }}')" style="font-family: 'Rubik', serif;">{{ fuel.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-6 col-lg-3 col-xl-3 mt-2">
+                                    <div class="form-group">
+                                        <h6 style="font-family: 'Noto Sans', sans-serif;"><label for="exampleFormControlSelect2">{% trans 'Transmission' %}</label>
+                                        </h6>
+                                        <select multiple onchange="window.location.href=this.options[this.selectedIndex].value" multiple class="form-control" id="exampleFormControlSelect2">
+                                            {% for transmission in transmissions %}
+                                                <option {% if request.GET.transmission == transmission.pk|stringformat:"i" %}selected{% endif %}
+                                                        class="text-center"
+                                                        onclick="addUrlParameter('transmission', '{{ transmission.pk }}')" style="font-family: 'Rubik', serif;">{{ transmission.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-6 col-lg-3 col-xl-3 mt-2">
+                                    <div class="form-group">
+                                        <h6 style="font-family: 'Noto Sans', sans-serif;"><label for="exampleFormControlSelect2">{% trans 'Color' %}</label></h6>
+                                        <select multiple onchange="window.location.href=this.options[this.selectedIndex].value" multiple class="form-control" id="exampleFormControlSelect2">
+                                            {% for color in colors %}
+                                                <option {% if request.GET.color == color.pk|stringformat:"i" %}selected{% endif %}
+                                                        class="text-center"
+                                                        onclick="addUrlParameter('color', '{{ color.pk }}')" style="font-family: 'Rubik', serif;">{{ color.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-6 col-lg-3 col-xl-3 mt-2">
+                                    <div class="form-group">
+                                        <h6 style="font-family: 'Noto Sans', sans-serif;"><label for="exampleFormControlSelect2">{% trans 'Year' %}</label></h6>
+                                        <select multiple onchange="window.location.href=this.options[this.selectedIndex].value" multiple class="form-control" id="exampleFormControlSelect2">
+                                            {% for year in years %}
+                                                <option {% if request.GET.year == year.pk|stringformat:"i" %}selected{% endif %}
+                                                        class="text-center"
+                                                        onclick="addUrlParameter('year', '{{ year.pk }}')" style="font-family: 'Rubik', serif;">{{ year.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-6 col-lg-3 col-xl-3 mt-2">
+                                    <div class="form-group">
+                                        <h6 style="font-family: 'Noto Sans', sans-serif;"><label for="exampleFormControlSelect2">{% trans 'Power' %}</label></h6>
+                                        <select multiple onchange="window.location.href=this.options[this.selectedIndex].value" multiple class="form-control" id="exampleFormControlSelect2">
+                                            {% for power in power %}
+                                                <option {% if request.GET.power == power.pk|stringformat:"i" %}selected{% endif %}
+                                                        class="text-center"
+                                                        onclick="addUrlParameter('power', '{{ power.pk }}')" style="font-family: 'Rubik', serif;">{{ power.amount }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-9 col-xl-10 mt-2">
+                                    <h6 style="font-family: 'Noto Sans', sans-serif;">{% trans 'Price' %}</h6>
+                                    <input type="text" class="js-range-slider" name="my_range">
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-3 col-xl-2">
+                                    <p class="text-center font-size-16" style="margin-top: 50px; font-family: 'Rubik', serif;">
+                                        <a href="{% url 'offers:cars' %}#cars" class="text-black">{% trans 'Clear filters' %}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5 mb-5">
+                <div class="col-8 offset-2">
+                    <form class="d-flex">
+                        <input class="form-control mr-2" name="q" type="search" placeholder="{% trans 'Search...' %}" aria-label="{% trans 'Search...' %}" style="font-family: 'Rubik', serif; border-radius: 50px; font-family: 'Rubik', serif;">
+                        <button class="btn btn-outline-primary mr-sm-2" type="submit" style="border-radius: 40px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                {% for car in object_list %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="item-1 rounded-bottom shadow pb-5">
+                            <img src="{{ car.image.url }}" class="img-fluid rounded-top" alt="Image">
+                            <div class="item-1-contents">
+                                <div class="text-center">
+                                    <h3 style="font-family: 'Noto Sans', sans-serif;"><a href="{% url 'offers:car-detail' pk=car.pk %}">{{ car.title }}</a></h3>
+                                    <div><span class="font-size-23">${{ car.price }} / </span>{% trans 'day' %}</div>
+                                </div>
+                                <ul class="specs">
+                                    <li>
+                                        <span style="font-family: 'Noto Sans', sans-serif;">{% trans 'Brand' %}</span>
+                                        <span class="spec" style="font-family: 'Rubik', sans-serif;">{{ car.brand }}</span>
+                                    </li>
+                                    <li>
+                                        <span style="font-family: 'Noto Sans', sans-serif;">{% trans 'Type' %}</span>
+                                        <span class="spec" style="font-family: 'Rubik', sans-serif;">{{ car.type }}</span>
+                                    </li>
+                                    <li>
+                                        <span style="font-family: 'Noto Sans', sans-serif;">{% trans 'Power' %}</span>
+                                        <span class="spec" style="font-family: 'Rubik', sans-serif;">{{ car.power }} {% trans 'ph' %}</span>
+                                    </li>
+                                    <li>
+                                        <span style="font-family: 'Noto Sans', sans-serif;">{% trans 'Fuel' %}</span>
+                                        <span class="spec" style="font-family: 'Rubik', sans-serif;">{{ car.fuel }}</span>
+                                    </li>
+                                    <li>
+                                        <span style="font-family: 'Noto Sans', sans-serif;">{% trans 'Drive' %}</span>
+                                        <span class="spec" class="spec" style="font-family: 'Rubik', sans-serif;">{{ car.drive }}</span>
+                                    </li>
+                                    <li>
+                                        <span style="font-family: 'Noto Sans', sans-serif;">{% trans 'Transmission' %}</span>
+                                        <span class="spec" class="spec" style="font-family: 'Rubik', sans-serif;">{{ car.transmission }}</span>
+                                    </li>
+                                    <li>
+                                        <span style="font-family: 'Noto Sans', sans-serif;">{% trans 'Color' %}</span>
+                                        <span class="spec" class="spec" style="font-family: 'Rubik', sans-serif;">{{ car.color }}</span>
+                                    </li>
+                                    <li>
+                                        <span style="font-family: 'Noto Sans', sans-serif;">{% trans 'Year' %}</span>
+                                        <span class="spec" class="spec" style="font-family: 'Rubik', sans-serif;">{{ car.year }}</span>
+                                    </li>
+                                </ul>
+                                <a href="{% url 'offers:car-detail' pk=car.pk %}" class="btn btn-primary py-2 px-4 float-right" style="border-radius: 35% 5%; font-family: 'Rubik', sans-serif;">
+                                    {% trans 'Learn More' %}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="pagination {% if request.GET.price %}d-none{% else %}{% endif %} justify-content-end">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="/cars/?page={{ page_obj.previous_page_number }}#cars"
+                               aria-label="Previous">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                                </svg>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% for i in page_count %}
+                        <li class="page-item {% if page_obj.number == forloop.counter %}active{% endif %}">
+                            <a class="page-link" href="/cars/?page={{ forloop.counter }}#cars">{{ forloop.counter }}</a>
+                        </li>
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="/cars/?page={{ page_obj.next_page_number }}#cars"
+                               aria-label="Next">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+                                </svg>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container site-section mb-5">
+        <div class="row justify-content-center text-center">
+            <div class="col-7 text-center mb-5">
+                <h2 style="font-family: 'Noto Sans', sans-serif;">{% trans 'How it works' %}</h2>
+                <p style="font-family: 'Rubik', serif;">{% trans 'Take a look at the process of car registration' %}</p>
+            </div>
+        </div>
+        <div class="how-it-works d-flex" style="font-family: 'Rubik', serif;">
+            <div class="step">
+                <span class="number"><span>01</span></span>
+                <span class="caption">{% trans 'Car' %}</span>
+            </div>
+            <div class="step">
+                <span class="number"><span>02</span></span>
+                 <span class="caption">{% trans 'Details' %}</span>
+            </div>
+            <div class="step">
+                <span class="number"><span>03</span></span>
+                <span class="caption">{% trans 'Time &amp; Place' %}</span>
+            </div>
+            <div class="step">
+                <span class="number"><span>04</span></span>
+                <span class="caption">{% trans 'Checkout' %}</span>
+            </div>
+            <div class="step">
+                <span class="number"><span>05</span></span>
+                <span class="caption">{% trans 'Done' %}</span>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        function addUrlParameter(name, value) {
+            let searchParams = new URLSearchParams(window.location.search)
+            searchParams.set(name, value)
+            window.location.search = searchParams.toString()
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+    <script>
+        $(".js-range-slider").ionRangeSlider({
+            type: "double",
+            grid: true,
+            min: {{ min_price }},
+            max: {{ max_price }},
+            {#from: {% get_price request 0 %},#}
+            {#to: {% get_price request 1 %},#}
+            prefix: "$",
+            onFinish: function (data) {
+                let from = data.from;
+                let to = data.to;
+                let result = from.toString() + ';' + to.toString()
+                addUrlParameter('price', result);
+            },
+        });
+    </script>
+{% endblock %}

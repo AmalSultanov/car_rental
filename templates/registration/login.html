@@ -1,0 +1,23 @@
+{% extends "registration/registration_base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Log in" %}{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        <h2 class="text-center" style="font-family: 'Noto Sans', sans-serif; margin: -20px 0 40px 0;">{% trans 'Log in' %}</h2>
+        <div class="form-row mb-3">
+            <div class="col">
+                <input type="text" name="username" id="username" class="form-control" placeholder="Username" style="font-family: 'Rubik', sans-serif; border-radius: 50px;" required>
+            </div>
+            <div class="col">
+                <input type="password" name="password" class="form-control" id="password" placeholder="Password" style="font-family: 'Rubik', sans-serif; border-radius: 50px;" required>
+            </div>
+        </div>
+        <p style="font-family: 'Rubik', sans-serif;">{% trans "Forgot your password?" %} <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>.</p>
+        <p style="font-family: 'Rubik', sans-serif; margin-top: -20px;">{% trans "Not a member?" %} <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>.</p>
+        <button type="submit" class="btn btn-primary py-2 px-4" style="font-family: 'Rubik', serif; border-radius: 35% 5%;">{% trans 'Sign in' %}</button>
+    </form>
+{% endblock %}
